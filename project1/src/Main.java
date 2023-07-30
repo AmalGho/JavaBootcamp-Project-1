@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -23,41 +24,38 @@ public class Main {
 
         do {
 
-
             if (turn == "X"){
                 System.out.println("\n\n Player " + turn + " turns .. choose place from 1-9 \n");
                 slot = gamer.nextInt();
+
+                if (!(slot > 0 && slot <= 9)) {
+                    System.out.println("Invalid entry, choose between 1-9");
+                }else if (isEmpty(slot)) {
+                    System.out.println("slot is not Available, choose another slot");
+                }else {
+                    turn = "O";
+                    printBoard();
+                    winner = checkWinner();
+                }
+
             }else {
                 slot = computer();
-            }
-
-
-
-            if (!(slot > 0 && slot <= 9)) {
-                System.out.println("Invalid entry, choose between 1-9");
-            }else {
-                if (isEmpty(slot)) {
-                    if (turn == "X"){
-                        System.out.println("slot is not Available, choose another slot");
-                    }
-                    if (turn == "O"){
-                        computer();
-                    }
-                }else {
-                    if (turn.equals("X")) {
-                        turn = "O";
-                    }else {
-                        System.out.println("\n\n Player " + turn + " turns .. computer choose " + slot +" \n");
-                        turn = "X";
-                    }
+                if (isEmpty(slot))
+                    computer();
+                else {
+                    System.out.println("\n\n Player " + turn + " turns .. computer choose " + slot +" \n");
+                    turn = "X";
                     printBoard();
                     winner = checkWinner();
                 }
             }
+
+
         }while(winner == null);
 
 
-        System.out.println("\n\n\n " + printWinner(winner) );
+        if (winner != null)
+            System.out.println("\n\n\n " + printWinner(winner) );
 
     }
 
